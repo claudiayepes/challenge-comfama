@@ -1,9 +1,14 @@
 import React from "react";
+import { Header } from "../Header";
+import { SearchAnime } from "../SearchAnime";
+import { AnimeList } from "../AnimeList";
 
 function AppUI(){
     return(
         <>
-            <h1>Challenge comfama</h1>
+            <Header/>
+            <SearchAnime/>
+            <AnimeList/>
         </>
 
     );

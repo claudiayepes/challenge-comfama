@@ -2,9 +2,19 @@ import React from "react";
 
 const context = React.createContext();
 
-function AnimeProvider(){
+function AnimeProvider({children}){
+    
     const [searchValue, setSearchValue] = React.useState('');
-    return();
+    
+  
+    return(
+        <context.Provider value={{
+            searchValue,
+            setSearchValue,
+            }}>
+            {children}
+        </context.Provider>
+    );
 }
 
 export {AnimeProvider, context};

@@ -5,6 +5,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  margin: 0;
+  padding: 0;
+  background-image: url('https://wallpapercave.com/wp/wp2394254.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: rgba(0, 0, 0, 0.7); /* Transparencia del fondo */
+  font-family: Arial, sans-serif;
+  color: #fff;
 }
 
 code {

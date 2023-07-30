@@ -8,6 +8,7 @@ function AnimeItem(props){
             <img src={props.src}/>
             <p className="anime-recommendation">{props.message}</p>
         </div>
+
     );
 }
 

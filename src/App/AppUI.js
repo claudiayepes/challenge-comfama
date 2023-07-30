@@ -7,29 +7,21 @@ import { useState, useEffect } from "react";
 import { context } from "../Context";
 
 function AppUI(){
-    const {searchValue, setSearchValue} = React.useContext(context);
-
-
-    // const URLAPI2 = "https://localhost:7205/api/Jikan?q=naruto&page=1";
-    // const URLAPI = "https://localhost:7205/api/Jikan";
- 
-    // const [data, setData]= useState([]);
-    // useEffect(()=>{
-    //     fetch(URLAPI)
-    //     .then((response) => response.json())
-    //     .then((data) => setData(data.data));
-        
-    // }, [])
+    const {searchValue, 
+        setSearchValue,
+        } = React.useContext(context);
 
     const URLAPI2 = "https://localhost:7205/api/Jikan?q=naruto&page=1";
     const URLAPI = "https://localhost:7205/api/Jikan";
  
-    const [data, setData]= useState([]);
+    const [data, setData]= React.useState([]);
+    const [currentPage, setCurrentPage] = React.useState(1);
+
     useEffect(()=>{
-        fetch(`${URLAPI}?q=${searchValue}&page=1`)
+        fetch(`${URLAPI}?q=${searchValue}&page=${currentPage}`)
         .then((response) => response.json())
-        .then((data) => setData(data.data));
-        
+        .then((data) => setData(data.data))
+       
     }, setSearchValue)
 
       //Estado derivado para filtrar en el array de data
@@ -54,18 +46,6 @@ function AppUI(){
                 ))}
                 
             </AnimeList>
-
-            {/* <Header/>
-            <SearchAnime/>
-            <AnimeList>
-                {data.map((item)=>(
-                    <AnimeItem key={item.mal_id}
-                    src={item.images.jpg.large_image_url}
-                    message={item.message}
-                    />
-                ))}
-                
-            </AnimeList> */}
         </>
 
     );

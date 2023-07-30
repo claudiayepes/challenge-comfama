@@ -5,9 +5,10 @@ import "./AnimeList.css";
 function AnimeList({children}){
 
     return(
-        <div className="catalog-container">
-            {children}
-        </div>
+            <div className="catalog-container">
+                {children}
+            </div>
+
     );
 }
 

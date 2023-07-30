@@ -2,7 +2,7 @@ import React from "react";
 import "./SearchAnime.css";
 import { Context, context } from "../Context";
 
-function SearchAnime(){
+function SearchAnime({children}){
     const {
         searchValue,
         setSearchValue
@@ -17,7 +17,8 @@ function SearchAnime(){
                 onChange={(event) => {
                     setSearchValue(event.target.value);
                 }}
-            />     
+            />
+            {children}
         </div>
 
     );

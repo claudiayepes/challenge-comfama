@@ -5,8 +5,8 @@ import { AnimeList } from "../AnimeList";
 import { AnimeItem } from "../AnimeItem";
 import { useState, useEffect } from "react";
 import { context } from "../Context";
-import { Pagination } from "../Pagination";
 import {Loading} from "../Loading";
+import { ErrorMessage } from "../ErrorMessage";
 
 function AppUI(){
     const {searchValue, 
@@ -30,14 +30,15 @@ function AppUI(){
     const URLAPI = "https://localhost:7205/api/Jikan";
     const loadSeriesList = async (searchValue, currentPage)=> {
         setLoading(true);
-        fetch(`${URLAPI}?q=${searchValue}&page=${currentPage}`)
+        
+        await fetch(`${URLAPI}?q=${searchValue}&page=${currentPage}`)
         .then((response) => response.json())
         .then((data) => {
             setData(data.data); 
             setSeriesPerPage(data.pagination.items.per_page);
             setTotal(data.pagination.items.total);
-            console.log(data.pagination.has_next_page);
         })
+        .catch((error) => setError(error))
         .finally(() => setLoading(false));
     }
 
@@ -48,22 +49,24 @@ function AppUI(){
 
     //Función para realizar filtro de búsqueda
     const animeFilter = (searchValue, currentPage)=>{
-        console.log(searchValue);
+        console.log(currentPage)
         loadSeriesList(searchValue, currentPage);
+        
     }
     //Funciones para paginar
     const totalPages = Math.ceil(total/seriesPerPage);
     const onPreviousPage = ()=>{
         setCurrentPage(currentPage - 1);
-        animeFilter(searchValue, currentPage);
+        console.log(currentPage);
+        loadSeriesList(searchValue, currentPage);
     }
     const onNextPage = ()=>{
-        alert("hola");
         setCurrentPage(currentPage + 1)
         if (currentPage >= totalPages){
             setHasNextPage(false);
         }
-        animeFilter(searchValue, currentPage);
+        console.log(currentPage);
+        loadSeriesList(searchValue, currentPage);
     }
 
     return(
@@ -72,6 +75,8 @@ function AppUI(){
             <SearchAnime>
                 <button className="search-button" onClick={()=>{animeFilter(searchValue, 1);}}>Buscar</button>   
             </SearchAnime>
+            <br/>
+            {error && <ErrorMessage/>}
             {loading && <Loading/>}
             <AnimeList>
                 
@@ -83,25 +88,14 @@ function AppUI(){
                 ))}
                 
             </AnimeList>
-            {/* <Pagination seriesPerPage={seriesPerPage}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage} 
-            total={total}
-            setTotal={setTotal}
-            hasNextPage={hasNextPage}
-            setHasNextPage={setHasNextPage}
-            />  */}
-        <nav className="pagination is-centered" role="navigation" aria-label="pagination">
-            <a className={`pagination-previous ${currentPage === 1 ? 'is-disabled' : ''}`} 
-            onClick={()=>(onPreviousPage())}>Previous</a>
-
-            <a className={`pagination-next ${!hasNextPage ? 'is-disabled' : ''}`} 
-            onClick={()=>(onNextPage())}>Next page</a>
-            
-            <ul className="pagination-list">
-                <li><span className="pagination-link is-current">Page {currentPage} of {totalPages}</span></li>
-            </ul>
-        </nav>      
+            <div className="pagination">
+                <div className="btn-container">
+                    <button className={`previous-button ${currentPage === 1 ? 'blocked-button' : ''}`} onClick={()=>(onPreviousPage())}>Previous</button>
+                        <span className="page-text">Page {currentPage} of {totalPages}</span>
+                    <button className={`next-button ${!hasNextPage ? 'blocked-button' : ''}`} onClick={()=>(onNextPage())}>Next page</button>
+                </div>
+            </div>  
+    
             
         </>
 

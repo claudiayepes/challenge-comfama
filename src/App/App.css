@@ -42,6 +42,46 @@
   background-color: #1c8adb;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.btn-container{
+  display: block;
+  margin: auto;
+}
+.previous-button,
+.next-button {
+  padding: 8px 15px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.page-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.blocked-button {
+  pointer-events: none;
+  background-color: #ddd; /* Color de fondo deshabilitado */
+  color: #888; /* Color de texto deshabilitado */
+  cursor: not-allowed; /* Cursor que indica que no está permitido interactuar */
+  /* Estilos adicionales para simular un botón deshabilitado */
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -11,31 +11,38 @@ import {Loading} from "../Loading";
 function AppUI(){
     const {searchValue, 
         setSearchValue,
-        currentPage,
-        setCurrentpage,
         } = React.useContext(context);
-
-    // const {data} = useFetch("https://localhost:7205/api/Jikan");
-
-    const URLAPI2 = "https://localhost:7205/api/Jikan?q=naruto&page=1";
-    const URLAPI = "https://localhost:7205/api/Jikan";
  
-    //Estados
+    //Estados de la data
     const [data, setData]= React.useState([]);
     const [loading, setLoading] = React.useState(true);
-    // const [currentPage, setCurrentPage] = React.useState(1);
-
+    const [error, setError]  = React.useState(null);
+    //Pagina actual
+    const [currentPage, setCurrentPage] = React.useState(1);
+    //Número de items por página
+    const [seriesPerPage, setSeriesPerPage] = React.useState(25);
+    //Total de items
+    const [total, setTotal] = React.useState(50);
+    //Estado del botón Next de la paginación
+    const [hasNextPage, setHasNextPage] = React.useState(true);
+    
+    //Consumo del API interna
+    const URLAPI = "https://localhost:7205/api/Jikan";
     const loadSeriesList = async (searchValue, currentPage)=> {
         setLoading(true);
         fetch(`${URLAPI}?q=${searchValue}&page=${currentPage}`)
         .then((response) => response.json())
-        .then((data) => {setData(data.data); console.log(data.data)})
+        .then((data) => {
+            setData(data.data); 
+            setSeriesPerPage(data.pagination.items.per_page);
+            setTotal(data.pagination.items.total);
+            console.log(data.pagination.has_next_page);
+        })
         .finally(() => setLoading(false));
     }
-   
+
     useEffect(()=>{
-   
-        loadSeriesList(searchValue, currentPage);
+         loadSeriesList(searchValue, currentPage);
     }, [])
 
 
@@ -44,20 +51,26 @@ function AppUI(){
         console.log(searchValue);
         loadSeriesList(searchValue, currentPage);
     }
-
-    //Estado derivado para filtrar en el array de data
-    // const animeFilter = data.filter(
-    // (item) =>{
-    // const text = item.title.toLowerCase();
-    // const searchText = searchValue.toLowerCase();
-    // return text.includes(searchText)
-    // })
+    //Funciones para paginar
+    const totalPages = Math.ceil(total/seriesPerPage);
+    const onPreviousPage = ()=>{
+        setCurrentPage(currentPage - 1);
+        animeFilter(searchValue, currentPage);
+    }
+    const onNextPage = ()=>{
+        alert("hola");
+        setCurrentPage(currentPage + 1)
+        if (currentPage >= totalPages){
+            setHasNextPage(false);
+        }
+        animeFilter(searchValue, currentPage);
+    }
 
     return(
         <>
             <Header/>
             <SearchAnime>
-                <button class="search-button" onClick={()=>{animeFilter(searchValue, 1);}}>Buscar</button>   
+                <button className="search-button" onClick={()=>{animeFilter(searchValue, 1);}}>Buscar</button>   
             </SearchAnime>
             {loading && <Loading/>}
             <AnimeList>
@@ -70,8 +83,25 @@ function AppUI(){
                 ))}
                 
             </AnimeList>
-            <Pagination  
-            />       
+            {/* <Pagination seriesPerPage={seriesPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage} 
+            total={total}
+            setTotal={setTotal}
+            hasNextPage={hasNextPage}
+            setHasNextPage={setHasNextPage}
+            />  */}
+        <nav className="pagination is-centered" role="navigation" aria-label="pagination">
+            <a className={`pagination-previous ${currentPage === 1 ? 'is-disabled' : ''}`} 
+            onClick={()=>(onPreviousPage())}>Previous</a>
+
+            <a className={`pagination-next ${!hasNextPage ? 'is-disabled' : ''}`} 
+            onClick={()=>(onNextPage())}>Next page</a>
+            
+            <ul className="pagination-list">
+                <li><span className="pagination-link is-current">Page {currentPage} of {totalPages}</span></li>
+            </ul>
+        </nav>      
             
         </>
 

@@ -74,7 +74,7 @@ function AppUI(){
         <>
             <Header/>
             <SearchAnime>
-                <button className="search-button" onClick={()=>{animeFilter(searchValue, 1);}}>Buscar</button>   
+                <button className="search-button" onClick={()=>{animeFilter(searchValue, 1);}}>Search</button>   
             </SearchAnime>
             <br/>
             {error && <ErrorMessage/>}

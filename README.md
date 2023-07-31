@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Anime catalog
+Welcome to the anime catalog repository of the world developed with React.js!
+Here you can search for your favorite series.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -22,12 +22,13 @@ function AppUI(){
     //Número de items por página
     const [seriesPerPage, setSeriesPerPage] = React.useState(25);
     //Total de items
-    const [total, setTotal] = React.useState(50);
+    const [total, setTotal] = React.useState(0);
     //Estado del botón Next de la paginación
     const [hasNextPage, setHasNextPage] = React.useState(true);
     
     //Consumo del API interna
     const URLAPI = "https://localhost:7205/api/Jikan";
+    
     const loadSeriesList = async (searchValue, currentPage)=> {
         setLoading(true);
         
@@ -91,7 +92,7 @@ function AppUI(){
             <div className="pagination">
                 <div className="btn-container">
                     <button className={`previous-button ${currentPage === 1 ? 'blocked-button' : ''}`} onClick={()=>(onPreviousPage())}>Previous</button>
-                        <span className="page-text">Page {currentPage} of {totalPages}</span>
+                        <span className="page-text">{total} resultados</span>
                     <button className={`next-button ${!hasNextPage ? 'blocked-button' : ''}`} onClick={()=>(onNextPage())}>Next page</button>
                 </div>
             </div>  

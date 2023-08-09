@@ -45,7 +45,6 @@
 .pagination {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
 }
@@ -69,7 +68,7 @@
   font-size: 16px;
   font-weight: bold;
   margin: 0 10px;
-  color: rgb(158, 32, 158);
+  color: #ff6600;
 }
 
 .blocked-button {

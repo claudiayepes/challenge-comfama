@@ -20,14 +20,13 @@ function AppUI(){
     //Pagina actual
     const [currentPage, setCurrentPage] = React.useState(1);
     //Número de items por página
-    const [seriesPerPage, setSeriesPerPage] = React.useState(25);
+    const [seriesPerPage, setSeriesPerPage] = React.useState(10);
     //Total de items
     const [total, setTotal] = React.useState(0);
-    //Estado del botón Next de la paginación
-    const [hasNextPage, setHasNextPage] = React.useState(true);
     
     //Consumo del API interna
     const URLAPI = "https://localhost:7205/api/Jikan";
+    // const URLAPI = "https://jikan.azurewebsites.net/api/jikan";
     
     const loadSeriesList = async (searchValue, currentPage)=> {
         setLoading(true);
@@ -45,29 +44,25 @@ function AppUI(){
 
     useEffect(()=>{
          loadSeriesList(searchValue, currentPage);
-    }, [])
+    }, [currentPage])
 
 
     //Función para realizar filtro de búsqueda
     const animeFilter = (searchValue, currentPage)=>{
-        console.log(currentPage)
         loadSeriesList(searchValue, currentPage);
-        
-    }
+        setCurrentPage(currentPage);
+   }
+
     //Funciones para paginar
     const totalPages = Math.ceil(total/seriesPerPage);
     const onPreviousPage = ()=>{
         setCurrentPage(currentPage - 1);
         console.log(currentPage);
-        loadSeriesList(searchValue, currentPage);
     }
+
     const onNextPage = ()=>{
         setCurrentPage(currentPage + 1)
-        if (currentPage >= totalPages){
-            setHasNextPage(false);
-        }
         console.log(currentPage);
-        loadSeriesList(searchValue, currentPage);
     }
 
     return(
@@ -91,9 +86,9 @@ function AppUI(){
             </AnimeList>
             <div className="pagination">
                 <div className="btn-container">
-                    <button className={`previous-button ${currentPage === 1 ? 'blocked-button' : ''}`} onClick={()=>(onPreviousPage())}>Previous</button>
-                        <span className="page-text">{total} resultados</span>
-                    <button className={`next-button ${!hasNextPage ? 'blocked-button' : ''}`} onClick={()=>(onNextPage())}>Next page</button>
+                    <button className={`previous-button ${currentPage === 1 ? 'blocked-button' : ''}`} onClick={onPreviousPage}>Previous</button>
+                        <span className="page-text">Page {currentPage} of {totalPages}</span>
+                    <button className={`next-button ${currentPage === totalPages ? 'blocked-button' : ''}`} onClick={onNextPage}>Next page</button>
                 </div>
             </div>  
     
